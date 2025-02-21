@@ -4,7 +4,7 @@ import pandas as pd
 import re
 from urllib.parse import urlparse
 
-# Load model and scaler with correct paths
+
 model = joblib.load('Streamlitapp/phishing_model.pkl')
 scaler = joblib.load('Streamlitapp/scaler.pkl')
 
@@ -28,7 +28,6 @@ def extract_features(url):
     words_host = re.findall(r'\w+', parsed_url.netloc)
     words_path = re.findall(r'\w+', parsed_url.path)
 
-    # Extracting only the required features
     features = {
         'length_url': len(url),
         'length_hostname': len(parsed_url.netloc),
@@ -48,11 +47,11 @@ def extract_features(url):
         'phish_hints': 1 if re.search(r'login|signin|secure|account|update|password|banking', url) else 0,
         'nb_hyperlinks': count_occurrences(url, 'http'),
         'ratio_intHyperlinks': 1 if 'https' in url else 0,
-        'empty_title': 0,  # Placeholder, actual extraction would require HTML parsing
-        'domain_in_title': 0,  # Placeholder, actual extraction would require HTML parsing
-        'domain_age': 0,  # Placeholder, requires WHOIS lookup
-        'google_index': 0,  # Placeholder, requires API call to check indexing
-        'page_rank': 0,  # Placeholder, requires external service/API
+        'empty_title': 0, 
+        'domain_in_title': 0,
+        'domain_age': 0,
+        'google_index': 0,
+        'page_rank': 0,  
     }
 
     return [features.get(col, 0) for col in [
@@ -62,7 +61,7 @@ def extract_features(url):
         'domain_in_title', 'domain_age', 'google_index', 'page_rank'
     ]]
 
-# Streamlit app
+
 st.title('Phishing URL Detection')
 st.image('Streamlitapp/image.jpg', caption = 'phishing')
 url_input = st.text_input('Enter URL to check for phishing:')
